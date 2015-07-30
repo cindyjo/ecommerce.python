@@ -1,0 +1,43 @@
+<html>
+<head>
+	<title>Cart</title>
+	{% load staticfiles %}
+	<link rel="stylesheet" type="text/css" href="{% static 'main/css/style.css' %}">
+</head>
+<body>
+	<div id="check_out">
+		<h1>Check Out</h1>
+		<table>
+			<tr>
+				<th>Qty</th>
+				<th>Description</th>
+				<th>Price</th>
+			</tr>
+			{% if request.session.cart %}
+			{% for order in request.session.cart %}
+			<tr>
+				<td>{{order.quantity}}</td>
+				<td>{{order.item}}</td>
+				<td>$ {{order.price}}
+					<a href="{% url 'destroy' order.id %}"><button>Delete</button></a>
+				</td>
+			</tr>
+			{% endfor %}
+			{% endif %}
+			<tr>
+				<td></td>
+				<td>Total</td>
+				<td>${{request.session.total}}</td>
+			</tr>
+		</table>
+	</div><br><br>
+	<div id="billing">
+		<form>
+			Name: <input type="text" name="name"><br>
+			Address: <input type="text" name="address"><br>
+			Card #: <input type="text" name="card"><br>
+			<input type="submit" value="Order"><br>
+		</form>
+	</div>
+</body>
+</html>

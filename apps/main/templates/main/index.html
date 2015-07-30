@@ -1,0 +1,39 @@
+<html>
+<head>
+	<title>Product Listing</title>
+	{% load staticfiles %}
+	<link rel="stylesheet" type="text/css" href="{% static 'main/css/style.css' %}">
+</head>
+<body>
+	<a href="{% url 'cart' %}">Your Cart ({{request.session.num_item}})</a>
+	<h1>Products</h1>
+	<table>
+		<tr>
+			<th>Description</th>
+			<th>Price</th>
+			<th>Qty</th>
+		</tr>
+		{% if products %}
+		{% for product in products%}
+		<tr>	
+			<td>{{product.item_name}}</td>
+			<td>$ {{product.price}}</td>
+			<td>
+				<form action="{% url 'process' %}" method="post">
+					{% csrf_token %}
+					<input type="hidden" name="item_name" value="{{product.item_name}}">
+					<input type="hidden" name="price" value="{{product.price}}">
+					<select name="quantity">
+					{% for qty in product.qty %}
+						<option value="{{qty}}">{{qty}}</option>
+					{% endfor %}
+					</select>
+					<input type="submit" value="Buy" name="submit">
+				</form>
+			</td>
+		</tr>
+		{%endfor%}
+		{%endif%}
+	</table>
+</body>
+</html>
